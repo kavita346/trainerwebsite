@@ -18,11 +18,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ec2-16-170-240-206.eu-north-1.compute.amazonaws.com >> ~/.ssh/known_hosts
+          ssh-keyscan -H "${{ secrets.ABC_CLIENT_MACHINE_SSH_IP }}" >> ~/.ssh/known_hosts
           
 
       - name: Deploy code to EC2
         run: |
           scp -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" ./index.html ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com:/home/ubuntu/
-          ssh -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo cp /home/ubuntu/index.html /var/www/html/'
-          ssh -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo service nginx restart'
+          ssh -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" "${{ secrets.ABC_CLIENT_MACHINE_SSH_USER_NAME }}"@"${{ secrets.ABC_CLIENT_MACHINE_SSH_IP }}" 'sudo cp /home/ubuntu/index.html /var/www/html/'
+          ssh -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" "${{ secrets.ABC_CLIENT_MACHINE_SSH_USER_NAME }}"@"${{ secrets.ABC_CLIENT_MACHINE_SSH_IP }}" 'sudo service nginx restart'
