@@ -23,7 +23,6 @@ jobs:
 
       - name: Deploy code to EC2
         run: |
-          chmod 700 "${{ secrets.ABC_CLIENT_MACHINE_SSH }}"
           scp -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" ./index.html ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com:/home/ubuntu/
           ssh -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo cp /home/ubuntu/index.html /var/www/html/'
           ssh -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo service nginx restart'
