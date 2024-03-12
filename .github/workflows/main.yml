@@ -16,7 +16,7 @@ jobs:
       - name: Install SSH key
         run: |
           mkdir -p ~/.ssh
-          echo ./abc.pem > ~/.ssh/id_rsa
+          echo "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ec2-16-170-240-206.eu-north-1.compute.amazonaws.com >> ~/.ssh/known_hosts
           
@@ -24,6 +24,6 @@ jobs:
       - name: Deploy code to EC2
         run: |
           chmod 700 abc.pem
-          scp -i "abc.pem" ./index.html ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com:/home/ubuntu/
-          ssh -i "abc.pem" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo cp /home/ubuntu/index.html /var/www/html/'
-          ssh -i "abc.pem" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo service nginx restart'
+          scp -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" ./index.html ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com:/home/ubuntu/
+          ssh -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo cp /home/ubuntu/index.html /var/www/html/'
+          ssh -i "${{ secrets.ABC_CLIENT_MACHINE_SSH }}" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo service nginx restart'
