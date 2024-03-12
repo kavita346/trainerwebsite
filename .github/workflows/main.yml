@@ -15,8 +15,12 @@ jobs:
 
       - name: Install SSH key
         run: |
+          mkdir -p ~/.ssh
+          echo ./abc.pem > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
           
 
       - name: Deploy code to EC2
         run: |
-          rsync -r --delete-after --quiet $GITHUB_WORKSPACE/ user@${{ secrets.EC2_HOST }}:/path/to/destination
+          scp -i "abc.pem" ./index.html ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com:/home/ubuntu/
