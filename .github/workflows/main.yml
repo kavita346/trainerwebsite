@@ -25,3 +25,5 @@ jobs:
         run: |
           chmod 700 abc.pem
           scp -i "abc.pem" ./index.html ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com:/home/ubuntu/
+          ssh -i "abc.pem" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo cp /home/ubuntu/index.html /var/www/html/'
+          ssh -i "abc.pem" ubuntu@ec2-16-170-240-206.eu-north-1.compute.amazonaws.com 'sudo service nginx restart'
